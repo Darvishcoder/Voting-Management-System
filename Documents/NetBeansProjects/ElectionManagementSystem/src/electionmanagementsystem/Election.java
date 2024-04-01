@@ -135,6 +135,11 @@ public class Election extends javax.swing.JFrame {
         Edit.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         Edit.setForeground(new java.awt.Color(255, 51, 102));
         Edit.setText("EDIT");
+        Edit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                EditMouseClicked(evt);
+            }
+        });
         Edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EditActionPerformed(evt);
@@ -343,6 +348,32 @@ public class Election extends javax.swing.JFrame {
         }
         } 
     }//GEN-LAST:event_DeleteMouseClicked
+
+    private void EditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EditMouseClicked
+        // TODO add your handling code here:
+         if(Key == -1 || ElectionDate.getDate().toString().isEmpty()){
+            JOptionPane.showMessageDialog(this," Missing Information ");
+        }else{
+            try{
+                String Day=String.valueOf(ElectionDate.getDate().getDay());
+                String Month=String.valueOf(ElectionDate.getDate().getMonth());
+                String Year=String.valueOf(ElectionDate.getDate().getYear());
+                String EDate= Day + "/" + Month + "/" + Year;
+                Con =DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db","root","");
+                String Query = "Update ElectionTbl set EName=?,EDate=? where EId=?";
+                
+                PreparedStatement UpdateQuery= Con.prepareStatement(Query);
+                UpdateQuery.setString(1, name.getText());
+                UpdateQuery.setString(2, EDate);
+                UpdateQuery.setInt(3, Key);
+                UpdateQuery.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Election Updated Succesfully");
+                DisplayElections();
+            }catch(Exception ex){
+            JOptionPane.showMessageDialog(this,ex);
+        }
+        } 
+    }//GEN-LAST:event_EditMouseClicked
 
     /**
      * @param args the command line arguments
