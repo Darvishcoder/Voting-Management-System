@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
 
@@ -94,6 +95,8 @@ public class Election extends javax.swing.JFrame {
         Date.setForeground(new java.awt.Color(255, 51, 102));
         Date.setText("Date");
 
+        ElectionTable.setFont(new java.awt.Font("Times New Roman", 2, 14)); // NOI18N
+        ElectionTable.setForeground(new java.awt.Color(255, 102, 0));
         ElectionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -105,6 +108,14 @@ public class Election extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        ElectionTable.setRowHeight(24);
+        ElectionTable.setShowHorizontalLines(true);
+        ElectionTable.setShowVerticalLines(true);
+        ElectionTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ElectionTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(ElectionTable);
 
         Add.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -133,6 +144,11 @@ public class Election extends javax.swing.JFrame {
         Delete.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         Delete.setForeground(new java.awt.Color(51, 51, 255));
         Delete.setText("DELETE");
+        Delete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DeleteMouseClicked(evt);
+            }
+        });
         Delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DeleteActionPerformed(evt);
@@ -300,6 +316,33 @@ public class Election extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_AddMouseClicked
+
+    int Key =-1;
+    private void ElectionTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ElectionTableMouseClicked
+        
+        DefaultTableModel model = (DefaultTableModel)ElectionTable.getModel();
+        //DefaultTableModel model =(DefaultTableModel).ElectionTable.getModel();
+        int MyIndex = ElectionTable.getSelectedRow();
+        Key = Integer.valueOf(model.getValueAt(MyIndex,0).toString());
+        name.setText(model.getValueAt(MyIndex,1).toString());
+    }//GEN-LAST:event_ElectionTableMouseClicked
+
+    private void DeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeleteMouseClicked
+        if(Key == -1){
+            JOptionPane.showMessageDialog(this,"Select  the Election to be Deleted");
+        }else{
+            try{
+                Con =DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db","root","");
+                String Query = "Delete from ElectionTbl where EId ="+Key;
+                Statement Delete= Con.createStatement();
+                Delete.executeUpdate(Query);
+                JOptionPane.showMessageDialog(this, "Election Deleted Succesfully");
+                DisplayElections();
+            }catch(Exception ex){
+            JOptionPane.showMessageDialog(this,ex);
+        }
+        } 
+    }//GEN-LAST:event_DeleteMouseClicked
 
     /**
      * @param args the command line arguments
