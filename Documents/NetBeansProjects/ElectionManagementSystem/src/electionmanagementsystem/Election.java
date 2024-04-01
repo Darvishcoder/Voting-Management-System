@@ -294,8 +294,7 @@ public class Election extends javax.swing.JFrame {
                 int row=Add.executeUpdate();
                 JOptionPane.showMessageDialog(this,"Election Added Succesfully");
                 Con.close();
-                
-                
+                DisplayElections(); 
             }catch (Exception e){
                 JOptionPane.showMessageDialog(this,e);
             }
