@@ -174,6 +174,11 @@ public class CandidatePage extends javax.swing.JFrame {
         Edit.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         Edit.setForeground(new java.awt.Color(255, 255, 255));
         Edit.setText("Edit");
+        Edit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                EditMouseClicked(evt);
+            }
+        });
         Edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EditActionPerformed(evt);
@@ -189,6 +194,11 @@ public class CandidatePage extends javax.swing.JFrame {
         Delete.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         Delete.setForeground(new java.awt.Color(255, 255, 255));
         Delete.setText("Delete");
+        Delete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DeleteMouseClicked(evt);
+            }
+        });
 
         Browse.setBackground(new java.awt.Color(51, 255, 0));
         Browse.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -460,12 +470,69 @@ public class CandidatePage extends javax.swing.JFrame {
         int MyIndex = CandidateTbl.getSelectedRow();
         Key = Integer.valueOf(model.getValueAt(MyIndex,0).toString());
         CName.setText(model.getValueAt(MyIndex,1).toString());
-        CAge.setText(model.getValueAt(MyIndex,2).toString());
-        CGender.setSelectedItem(model.getValueAt(MyIndex,3).toString());
+        CGender.setSelectedItem(model.getValueAt(MyIndex,2).toString());
         FetchPhoto();
+        CAge.setText(model.getValueAt(MyIndex,4).toString());
         ElectionList.setSelectedItem(model.getValueAt(MyIndex,5).toString());
         
     }//GEN-LAST:event_CandidateTblMouseClicked
+
+    private void DeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeleteMouseClicked
+        if(Key == -1){
+            JOptionPane.showMessageDialog(this,"Select  the Candidate to be Deleted");
+        }else{
+            try{
+                Con =DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db","root","");
+                String Query = "Delete from CandidateTbl where CId ="+Key;
+                Statement Delete= Con.createStatement();
+                Delete.executeUpdate(Query);
+                JOptionPane.showMessageDialog(this, "Candidate Deleted Succesfully");
+                DisplaysCandidates();
+            }catch(Exception ex){
+            JOptionPane.showMessageDialog(this,ex);
+        }
+        }         // TODO add your handling code here:
+    }//GEN-LAST:event_DeleteMouseClicked
+
+    private void EditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EditMouseClicked
+        //if(Key == -1 || CAge.getText().isEmpty() || CName.getText().isEmpty() || ElectionList.getSelectedIndex() == -1 || CGender.getSelectedIndex() == -1 ){
+         if(imgpath != null){
+            try{
+                InputStream img = new FileInputStream(imgpath);
+                Con =DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db","root","");
+                //String Query = "Update CandidateTbl set CName=?,CGen,CPhoto,CAge,CElect where CId=?";
+                String Query = "UPDATE CandidateTbl SET CName=?, CGen=?, CPhoto=?, CAge=?, CElect=? WHERE CId=?";
+
+                PreparedStatement UpdateQuery= Con.prepareStatement(Query);
+//                UpdateQuery.setString(2, CName.getText());
+//                UpdateQuery.setString(3, CGender.getSelectedItem().toString());
+//                UpdateQuery.setBlob(4, img);
+//                UpdateQuery.setInt(5, Integer.valueOf(CAge.getText().toString()));
+//                UpdateQuery.setString(6, ElectionList.getSelectedItem().toString());
+//                UpdateQuery.setInt(7, Key);
+                    UpdateQuery.setString(1, CName.getText());
+                    UpdateQuery.setString(2, CGender.getSelectedItem().toString());
+                    UpdateQuery.setBlob(3, img);
+                    UpdateQuery.setInt(4, Integer.valueOf(CAge.getText().toString()));
+                    UpdateQuery.setString(5, ElectionList.getSelectedItem().toString());
+                    UpdateQuery.setInt(6, Key);
+
+               if( UpdateQuery.executeUpdate() == 1){
+                   JOptionPane.showMessageDialog(this, "Candidate Updated Succesfully");
+                   DisplaysCandidates();
+               }else{
+                   JOptionPane.showMessageDialog(this," Missing Information ");
+               }
+            }catch(Exception ex){
+            JOptionPane.showMessageDialog(this,ex);
+        }
+        } else{
+             JOptionPane.showMessageDialog(this,"Select Photo");
+             CImage.setIcon(null);
+             CImage.setText("");
+         }
+         imgpath =null;
+    }//GEN-LAST:event_EditMouseClicked
 
     /**
      * @param args the command line arguments
