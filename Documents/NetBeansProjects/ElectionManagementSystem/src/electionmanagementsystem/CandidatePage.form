@@ -57,7 +57,7 @@
                               <Component id="CGender" min="-2" pref="104" max="-2" attributes="0"/>
                               <Component id="Gender" min="-2" pref="55" max="-2" attributes="0"/>
                               <Component id="PhotoLbl" alignment="0" min="-2" pref="76" max="-2" attributes="0"/>
-                              <Component id="CPhoto" alignment="0" min="-2" pref="144" max="-2" attributes="0"/>
+                              <Component id="CImage" alignment="0" min="-2" pref="144" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Component id="CName" alignment="0" min="-2" pref="137" max="-2" attributes="0"/>
@@ -113,7 +113,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="ElectionList" min="-2" max="-2" attributes="0"/>
-                              <Component id="CPhoto" min="-2" pref="138" max="-2" attributes="0"/>
+                              <Component id="CImage" min="-2" pref="138" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="Browse" min="-2" pref="42" max="-2" attributes="0"/>
@@ -417,7 +417,7 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="CPhoto">
+        <Component class="javax.swing.JLabel" name="CImage">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial Black" size="14" style="2"/>

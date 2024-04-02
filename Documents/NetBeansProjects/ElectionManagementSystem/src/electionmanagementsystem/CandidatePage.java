@@ -98,7 +98,7 @@ public class CandidatePage extends javax.swing.JFrame {
         Age = new javax.swing.JLabel();
         Name3 = new javax.swing.JLabel();
         ElectionList = new javax.swing.JComboBox<>();
-        CPhoto = new javax.swing.JLabel();
+        CImage = new javax.swing.JLabel();
         PhotoLbl = new javax.swing.JLabel();
         CName = new javax.swing.JTextField();
         CAge = new javax.swing.JTextField();
@@ -234,11 +234,11 @@ public class CandidatePage extends javax.swing.JFrame {
             }
         });
 
-        CPhoto.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
-        CPhoto.setForeground(new java.awt.Color(255, 51, 102));
-        CPhoto.setText("Photo");
-        CPhoto.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        CPhoto.setOpaque(true);
+        CImage.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
+        CImage.setForeground(new java.awt.Color(255, 51, 102));
+        CImage.setText("Photo");
+        CImage.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        CImage.setOpaque(true);
 
         PhotoLbl.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
         PhotoLbl.setForeground(new java.awt.Color(255, 51, 102));
@@ -285,7 +285,7 @@ public class CandidatePage extends javax.swing.JFrame {
                             .addComponent(CGender, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Gender, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(PhotoLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(CPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(CImage, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(CName, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(Add)
@@ -330,7 +330,7 @@ public class CandidatePage extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ElectionList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(CPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(CImage, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Browse, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -419,7 +419,7 @@ public class CandidatePage extends javax.swing.JFrame {
                         MyImage = new ImageIcon(pic);
                     }
                     Image img = MyImage.getImage();
-                    Image newImg = img.getScaledInstance(CPhoto.getWidth(),CPhoto.getHeight(),Image.SCALE_SMOOTH);
+                    Image newImg = img.getScaledInstance(CImage.getWidth(),CImage.getHeight(),Image.SCALE_SMOOTH);
                     ImageIcon image = new ImageIcon(newImg);
                     return image;              
     }
@@ -430,14 +430,31 @@ public class CandidatePage extends javax.swing.JFrame {
         if(result == JFileChooser.APPROVE_OPTION ){
         File SelectedImageFile = chooser.getSelectedFile();
         String selectedImagePath=SelectedImageFile.getAbsolutePath();
-        CPhoto.setIcon(ResizePhoto(selectedImagePath,null));
+        CImage.setIcon(ResizePhoto(selectedImagePath,null));
         imgpath = selectedImagePath;
 }
     }//GEN-LAST:event_BrowseMouseClicked
+    int Key = -1;
     private void FetchPhoto(){
+        String Query = "SELECT CPhoto FROM CandidateTbl WHERE CId = ?";
+        ResultSet Rs;
+        try {
+        Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db", "root", ""); // Adjust your database name accordingly
+        PreparedStatement St = Con.prepareStatement(Query);
+        St.setInt(1, Key); 
+        Rs = St.executeQuery();
+        if (Rs.next()) {
+            byte[] photoBytes = Rs.getBytes("CPhoto");
+            ImageIcon imageIcon = new ImageIcon(photoBytes);
+            CImage.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(CImage.getWidth(), CImage.getHeight(), Image.SCALE_SMOOTH)));
+            }
+    }catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error fetching photo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    } 
         
     }
-    int Key =-1;
+    
     private void CandidateTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CandidateTblMouseClicked
         DefaultTableModel model = (DefaultTableModel)CandidateTbl.getModel();
         int MyIndex = CandidateTbl.getSelectedRow();
@@ -445,8 +462,9 @@ public class CandidatePage extends javax.swing.JFrame {
         CName.setText(model.getValueAt(MyIndex,1).toString());
         CAge.setText(model.getValueAt(MyIndex,2).toString());
         CGender.setSelectedItem(model.getValueAt(MyIndex,3).toString());
-        CName.setText(model.getValueAt(MyIndex,1).toString());
-        CName.setText(model.getValueAt(MyIndex,1).toString());
+        FetchPhoto();
+        ElectionList.setSelectedItem(model.getValueAt(MyIndex,5).toString());
+        
     }//GEN-LAST:event_CandidateTblMouseClicked
 
     /**
@@ -491,8 +509,8 @@ public class CandidatePage extends javax.swing.JFrame {
     private javax.swing.JButton Browse;
     private javax.swing.JTextField CAge;
     private javax.swing.JComboBox<String> CGender;
+    private javax.swing.JLabel CImage;
     private javax.swing.JTextField CName;
-    private javax.swing.JLabel CPhoto;
     private javax.swing.JTable CandidateTbl;
     private javax.swing.JButton Delete;
     private javax.swing.JButton Edit;
