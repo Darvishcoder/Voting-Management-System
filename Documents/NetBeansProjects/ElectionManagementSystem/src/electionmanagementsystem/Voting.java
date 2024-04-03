@@ -27,6 +27,14 @@ public class Voting extends javax.swing.JFrame {
         VoteCounted1.setVisible(false);
         
     }
+    int VotingId;
+    public Voting(int VoterId){
+        initComponents();
+        DisplaysCandidates();
+        VoteCounted1.setVisible(false);
+        VotingId = VoterId;
+        //JOptionPane.showMessageDialog(this, VotingId);
+    }
     private void DisplaysCandidates(){
           try {
               Con =DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db","root","");
@@ -44,7 +52,7 @@ public class Voting extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         CandidateTbl = new javax.swing.JTable();
-        Edit = new javax.swing.JButton();
+        BackBtn = new javax.swing.JButton();
         CName = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         CPhoto = new javax.swing.JLabel();
@@ -88,12 +96,17 @@ public class Voting extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(CandidateTbl);
 
-        Edit.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        Edit.setForeground(new java.awt.Color(255, 51, 102));
-        Edit.setText("BACK");
-        Edit.addActionListener(new java.awt.event.ActionListener() {
+        BackBtn.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        BackBtn.setForeground(new java.awt.Color(255, 51, 102));
+        BackBtn.setText("BACK");
+        BackBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BackBtnMouseClicked(evt);
+            }
+        });
+        BackBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EditActionPerformed(evt);
+                BackBtnActionPerformed(evt);
             }
         });
 
@@ -152,15 +165,14 @@ public class Voting extends javax.swing.JFrame {
                         .addGap(224, 224, 224)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(CName, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(43, 43, 43)
-                                    .addComponent(VoteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(CPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(43, 43, 43)
+                                .addComponent(VoteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(CPhoto, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(445, 445, 445)
-                        .addComponent(Edit, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(BackBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(603, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -189,7 +201,7 @@ public class Voting extends javax.swing.JFrame {
                 .addGap(53, 53, 53)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Edit)
+                .addComponent(BackBtn)
                 .addContainerGap(58, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -252,9 +264,9 @@ public class Voting extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditActionPerformed
+    private void BackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_EditActionPerformed
+    }//GEN-LAST:event_BackBtnActionPerformed
 
     private void VoteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VoteBtnActionPerformed
         // TODO add your handling code here:
@@ -314,11 +326,27 @@ public class Voting extends javax.swing.JFrame {
            }catch(Exception Ex)
            {    
            }
+      }int VNumber;
+      private void VCheck(){
+           try{
+               St1 = Con.createStatement();
+               Rs1= St1.executeQuery("Select Count(*) from VotesTbl where VoterId = " +VotingId+" and ElectId = "+ElectionId+"");
+               VNumber=Rs1.getInt(1);
+           
+               Rs1.next();
+               VId= Rs1.getInt(1)+1;
+           }catch(Exception Ex)
+           {    
+           }
       }
     private void VoteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VoteBtnMouseClicked
+        VCheck();
         if(Key == -1){
             JOptionPane.showMessageDialog(this,"Select the Candidate ");
-        }else{
+        }else if(VNumber> 0){
+            JOptionPane.showMessageDialog(this,"You can not vote Twice.....!!! ");
+        }
+        else{
             try{
                 
                 VCount();
@@ -326,12 +354,13 @@ public class Voting extends javax.swing.JFrame {
                 PreparedStatement Add=Con.prepareStatement("insert into VotesTbl values(?,?,?,?)");
                 Add.setInt(1, VId);
                 // Here we need to add the VOTERID but we will do that later since it will come from the login.
-                Add.setInt(2, VId);
+                Add.setInt(2, VotingId);
                 Add.setInt(3, ElectionId);
                 Add.setInt(4, Key);
                 int row=Add.executeUpdate();
-                //JOptionPane.showMessageDialog(this,"Vote Count");
+                JOptionPane.showMessageDialog(this,"Vote Count");
                 Con.close();
+                VoteBtn.setVisible(true);
                 VoteCounted1.setVisible(true);
                 
                 DisplaysCandidates(); 
@@ -340,6 +369,11 @@ public class Voting extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_VoteBtnMouseClicked
+
+    private void BackBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackBtnMouseClicked
+        new login().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BackBtnMouseClicked
 
 
     public static void main(String args[]) {
@@ -352,10 +386,10 @@ public class Voting extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BackBtn;
     private javax.swing.JLabel CName;
     private javax.swing.JLabel CPhoto;
     private javax.swing.JTable CandidateTbl;
-    private javax.swing.JButton Edit;
     private javax.swing.JButton VoteBtn;
     private javax.swing.JLabel VoteCounted1;
     private javax.swing.JLabel jLabel1;
