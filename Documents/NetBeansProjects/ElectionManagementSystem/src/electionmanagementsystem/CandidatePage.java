@@ -19,19 +19,14 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
-/**
- *
- * @author DARVISH KISHOR
- */
+
 public class CandidatePage extends javax.swing.JFrame {
     Connection Con=null;
     PreparedStatement Pst= null;
     ResultSet Rs =null;
     Statement St= null;
 
-    /**
-     * Creates new form CandidatePage
-     */
+
     public CandidatePage() {
         initComponents();
         GetElections();
@@ -44,13 +39,10 @@ public class CandidatePage extends javax.swing.JFrame {
               St=Con.createStatement();
               String Query="Select * From CandidateTbl";
               Rs= St.executeQuery(Query);
-              //Rs=St.executeQuery("Select * from ElectionTbl");
                DefaultTableModel model = (DefaultTableModel) CandidateTbl.getModel();
               while(Rs.next()){
             String ElectId = Rs.getString("EId");
             model.addRow(new Object[]{ElectId});
-//              String ElectId= Rs.getString("EId");
-//              CandidateTbl.addItem(ElectId);
                 }  
           }catch (Exception e){
       }
@@ -133,7 +125,7 @@ public class CandidatePage extends javax.swing.JFrame {
         jLabel3.setBackground(new java.awt.Color(255, 51, 51));
         jLabel3.setFont(new java.awt.Font("Goudy Old Style", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel3.setText("Manage Candidate");
+        jLabel3.setText("Manage Candidate List");
 
         CandidateTbl.setBackground(new java.awt.Color(204, 204, 204));
         CandidateTbl.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -189,6 +181,11 @@ public class CandidatePage extends javax.swing.JFrame {
         Back.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         Back.setForeground(new java.awt.Color(255, 255, 255));
         Back.setText("Back");
+        Back.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BackMouseClicked(evt);
+            }
+        });
 
         Delete.setBackground(new java.awt.Color(255, 0, 0));
         Delete.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -371,8 +368,7 @@ public class CandidatePage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditActionPerformed
-    
-       // TODO add your handling code here:
+      // TODO add your handling code here:
        
     }//GEN-LAST:event_EditActionPerformed
 
@@ -400,7 +396,7 @@ public class CandidatePage extends javax.swing.JFrame {
     } else {
         try 
             {
-                CandidateCount();
+            CandidateCount();
             Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db", "root", "");
             PreparedStatement Add = Con.prepareStatement("Insert into CandidateTbl values (?,?,?,?,?,?)");
             InputStream img = new FileInputStream(imgpath);
@@ -410,6 +406,7 @@ public class CandidatePage extends javax.swing.JFrame {
             Add.setBlob(4, img);
             Add.setInt(5, Integer.parseInt(CAge.getText()));
             Add.setString(6,ElectionList.getSelectedItem().toString());
+          
             
             int row = Add.executeUpdate();
             Con.close();
@@ -491,25 +488,17 @@ public class CandidatePage extends javax.swing.JFrame {
             }catch(Exception ex){
             JOptionPane.showMessageDialog(this,ex);
         }
-        }         // TODO add your handling code here:
+        }         
     }//GEN-LAST:event_DeleteMouseClicked
 
     private void EditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EditMouseClicked
-        //if(Key == -1 || CAge.getText().isEmpty() || CName.getText().isEmpty() || ElectionList.getSelectedIndex() == -1 || CGender.getSelectedIndex() == -1 ){
-         if(imgpath != null){
+    if(imgpath != null){
             try{
                 InputStream img = new FileInputStream(imgpath);
                 Con =DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db","root","");
-                //String Query = "Update CandidateTbl set CName=?,CGen,CPhoto,CAge,CElect where CId=?";
                 String Query = "UPDATE CandidateTbl SET CName=?, CGen=?, CPhoto=?, CAge=?, CElect=? WHERE CId=?";
 
                 PreparedStatement UpdateQuery= Con.prepareStatement(Query);
-//                UpdateQuery.setString(2, CName.getText());
-//                UpdateQuery.setString(3, CGender.getSelectedItem().toString());
-//                UpdateQuery.setBlob(4, img);
-//                UpdateQuery.setInt(5, Integer.valueOf(CAge.getText().toString()));
-//                UpdateQuery.setString(6, ElectionList.getSelectedItem().toString());
-//                UpdateQuery.setInt(7, Key);
                     UpdateQuery.setString(1, CName.getText());
                     UpdateQuery.setString(2, CGender.getSelectedItem().toString());
                     UpdateQuery.setBlob(3, img);
@@ -534,34 +523,14 @@ public class CandidatePage extends javax.swing.JFrame {
          imgpath =null;
     }//GEN-LAST:event_EditMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CandidatePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CandidatePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CandidatePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CandidatePage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void BackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackMouseClicked
+        new MainMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BackMouseClicked
 
-        /* Create and display the form */
+    
+    public static void main(String args[]) {
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new CandidatePage().setVisible(true);
