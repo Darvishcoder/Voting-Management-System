@@ -37,8 +37,8 @@ public class login extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        Name = new javax.swing.JLabel();
+        Pass = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         RoleList = new javax.swing.JComboBox<>();
         LogIn = new javax.swing.JButton();
@@ -72,13 +72,13 @@ public class login extends javax.swing.JFrame {
                 .addGap(30, 30, 30))
         );
 
-        jLabel2.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 51, 102));
-        jLabel2.setText("Name");
+        Name.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
+        Name.setForeground(new java.awt.Color(255, 51, 102));
+        Name.setText("Name");
 
-        jLabel3.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 51, 102));
-        jLabel3.setText("Password");
+        Pass.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
+        Pass.setForeground(new java.awt.Color(255, 51, 102));
+        Pass.setText("Password");
 
         jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\DARVISH KISHOR\\Music\\image-100x91.jpg")); // NOI18N
 
@@ -128,8 +128,8 @@ public class login extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(30, 30, 30)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(Pass, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Name, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
                                 .addComponent(LogIn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -155,11 +155,11 @@ public class login extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel2)
+                                    .addComponent(Name)
                                     .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
+                                    .addComponent(Pass)
                                     .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel4))
                         .addGap(1, 1, 1)))
@@ -198,7 +198,7 @@ public class login extends javax.swing.JFrame {
             }
             else if(Username.getText().equals("Admin") && Password.getText().equals("Password"))
             {
-                new CandidatePage().setVisible(true);
+                new MainMenu().setVisible(true);
                 this.dispose();
             }
             else
@@ -208,13 +208,16 @@ public class login extends javax.swing.JFrame {
                 Password.setText("");                
             }
         }
-        else{
-            String Query= "'select * From VotersTbl where VName = '" +Username.getText()+"' and Password '"+Password.getText()+"'";
+        else {
+            
+            String Query = "SELECT * FROM VotersTbl WHERE VName = '" + Username.getText() + "' AND VPassword = '" + Password.getText() + "'";
+
              try {
               Con =DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db","root","");
               St=Con.createStatement();
               Rs= St.executeQuery(Query);
               if(Rs.next()){
+                  //new Voting().setVisible(true);
                   new Voting(Rs.getInt(1)).setVisible(true);
                   this.dispose();
                 }  
@@ -264,12 +267,12 @@ public class login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton LogIn;
+    private javax.swing.JLabel Name;
+    private javax.swing.JLabel Pass;
     private javax.swing.JPasswordField Password;
     private javax.swing.JComboBox<String> RoleList;
     private javax.swing.JTextField Username;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
