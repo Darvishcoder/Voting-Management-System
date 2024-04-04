@@ -164,6 +164,11 @@ public class Voters extends javax.swing.JFrame {
         Back.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         Back.setForeground(new java.awt.Color(102, 102, 255));
         Back.setText("Back");
+        Back.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BackMouseClicked(evt);
+            }
+        });
         Back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BackActionPerformed(evt);
@@ -462,6 +467,11 @@ public class Voters extends javax.swing.JFrame {
         ElectionList.setSelectedItem(model.getValueAt(MyIndex,5).toString());
         
     }//GEN-LAST:event_VotersTblMouseClicked
+
+    private void BackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackMouseClicked
+        new MainMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BackMouseClicked
 
    
     public static void main(String args[]) {
