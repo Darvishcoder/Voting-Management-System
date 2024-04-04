@@ -271,7 +271,8 @@ public class Voting extends javax.swing.JFrame {
     private void VoteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VoteBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_VoteBtnActionPerformed
-     private ImageIcon ResizePhoto(String ImagePath,byte[] pic){
+      int Key = -1;
+    private ImageIcon ResizePhoto(String ImagePath,byte[] pic){
            ImageIcon MyImage = null;
             if(ImagePath != null){
             MyImage = new ImageIcon(ImagePath);
@@ -283,6 +284,7 @@ public class Voting extends javax.swing.JFrame {
                     ImageIcon image = new ImageIcon(newImg);
                     return image;              
     }
+     
     private void FetchPhoto(){
         String Query = "SELECT CPhoto FROM CandidateTbl WHERE CId = ?";
         ResultSet Rs;
@@ -301,7 +303,7 @@ public class Voting extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Error fetching photo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     } 
      }
-    int Key = -1;
+   
     int ElectionId;
     private void CandidateTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CandidateTblMouseClicked
         DefaultTableModel model = (DefaultTableModel)CandidateTbl.getModel();
@@ -309,41 +311,53 @@ public class Voting extends javax.swing.JFrame {
         Key = Integer.valueOf(model.getValueAt(MyIndex,0).toString());
         CName.setText(model.getValueAt(MyIndex,1).toString());
         FetchPhoto();
-        //ElectionList.setSelectedItem(model.getValueAt(MyIndex,5).toString());
         ElectionId = Integer.valueOf(model.getValueAt(MyIndex,5).toString());
+        
         
 
     }//GEN-LAST:event_CandidateTblMouseClicked
-    int VId;
+    
+    int VoteId;
     Statement St1= null;
     ResultSet Rs1=null;
       private void VCount(){
            try{
                St1 = Con.createStatement();
-               Rs1= St1.executeQuery("Select MAX(VId) from VotesTbl");
+               Rs1= St1.executeQuery("Select MAX(VoteId) from VotesTbl");
                Rs1.next();
-               VId= Rs1.getInt(1)+1;
+               VoteId= Rs1.getInt(1)+1;
            }catch(Exception Ex)
            {    
            }
-      }int VNumber;
+      }
+      int VNumber;
       private void VCheck(){
            try{
                St1 = Con.createStatement();
-               Rs1= St1.executeQuery("Select Count(*) from VotesTbl where VoterId = " +VotingId+" and ElectId = "+ElectionId+"");
-               VNumber=Rs1.getInt(1);
-           
-               Rs1.next();
-               VId= Rs1.getInt(1)+1;
+               Rs1= St1.executeQuery("Select Count(*) from VotesTbl where VoterId = " +VotingId+" and CandidateId = "+ElectionId+"");
+               if (Rs1.next()) {
+            VNumber = Rs1.getInt(1);
+        } else {
+            VNumber = 0;
+        }
+         
+//               if(Rs1.next()){
+//                   VNumber=1;
+//               }else{
+//                   VNumber = 0;
+//               }
+
            }catch(Exception Ex)
            {    
+               JOptionPane.showMessageDialog(this, Ex);
            }
       }
     private void VoteBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VoteBtnMouseClicked
         VCheck();
         if(Key == -1){
             JOptionPane.showMessageDialog(this,"Select the Candidate ");
-        }else if(VNumber> 0){
+        }
+       else if(VNumber> 0){
             JOptionPane.showMessageDialog(this,"You can not vote Twice.....!!! ");
         }
         else{
@@ -352,7 +366,7 @@ public class Voting extends javax.swing.JFrame {
                 VCount();
                 Con =DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db","root","");
                 PreparedStatement Add=Con.prepareStatement("insert into VotesTbl values(?,?,?,?)");
-                Add.setInt(1, VId);
+                Add.setInt(1, VoteId);
                 // Here we need to add the VOTERID but we will do that later since it will come from the login.
                 Add.setInt(2, VotingId);
                 Add.setInt(3, ElectionId);
@@ -360,7 +374,7 @@ public class Voting extends javax.swing.JFrame {
                 int row=Add.executeUpdate();
                 JOptionPane.showMessageDialog(this,"Vote Count");
                 Con.close();
-                VoteBtn.setVisible(true);
+                VoteBtn.setVisible(false);
                 VoteCounted1.setVisible(true);
                 
                 DisplaysCandidates(); 
