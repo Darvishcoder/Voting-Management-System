@@ -20,6 +20,8 @@ public class Election extends javax.swing.JFrame {
     ResultSet Rs =null;
     Statement St= null;
     
+   
+    
     
             
    
@@ -38,7 +40,6 @@ public class Election extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         ElectionNameTb = new javax.swing.JLabel();
-        name = new javax.swing.JTextField();
         Date = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         ElectionTable = new javax.swing.JTable();
@@ -47,6 +48,7 @@ public class Election extends javax.swing.JFrame {
         Delete = new javax.swing.JButton();
         Back = new javax.swing.JButton();
         ElectionDate = new com.toedter.calendar.JDateChooser();
+        ElectionList = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -57,16 +59,16 @@ public class Election extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Goudy Old Style", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("ONLINE VOTING SYSTEM");
+        jLabel1.setText("VOTING MANAGEMENT SYSTEM");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(396, 396, 396)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(283, 283, 283))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -79,17 +81,11 @@ public class Election extends javax.swing.JFrame {
         jLabel2.setBackground(new java.awt.Color(255, 51, 51));
         jLabel2.setFont(new java.awt.Font("Goudy Old Style", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel2.setText("Manage Election");
+        jLabel2.setText("Manage Election List");
 
         ElectionNameTb.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
         ElectionNameTb.setForeground(new java.awt.Color(255, 51, 102));
         ElectionNameTb.setText("Name");
-
-        name.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameActionPerformed(evt);
-            }
-        });
 
         Date.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
         Date.setForeground(new java.awt.Color(255, 51, 102));
@@ -163,9 +159,22 @@ public class Election extends javax.swing.JFrame {
         Back.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         Back.setForeground(new java.awt.Color(102, 102, 255));
         Back.setText("Back");
+        Back.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BackMouseClicked(evt);
+            }
+        });
         Back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BackActionPerformed(evt);
+            }
+        });
+
+        ElectionList.setForeground(new java.awt.Color(255, 51, 51));
+        ElectionList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "National-level elections ", "State-level elections ", "District-level elections ", "Local government body elections " }));
+        ElectionList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ElectionListActionPerformed(evt);
             }
         });
 
@@ -178,12 +187,12 @@ public class Election extends javax.swing.JFrame {
                 .addGap(81, 81, 81)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ElectionNameTb, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(66, 66, 66)
+                    .addComponent(ElectionList, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(64, 64, 64)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Date, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ElectionDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(553, 553, 553))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -213,10 +222,13 @@ public class Election extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ElectionNameTb)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ElectionDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ElectionDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(ElectionList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(144, 144, 144)
                         .addComponent(Back, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -249,10 +261,6 @@ public class Election extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameActionPerformed
 
     private void AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddActionPerformed
         // TODO add your handling code here:
@@ -295,8 +303,8 @@ public class Election extends javax.swing.JFrame {
     
     private void AddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddMouseClicked
         // TODO add your handling code here:
-        if(name.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this,"Enter the Election Name");
+        if(ElectionList.getSelectedIndex() == -1){
+            JOptionPane.showMessageDialog(this,"Select the Election Name");
         }else{
             try{
                 String Day=String.valueOf(ElectionDate.getDate().getDay());
@@ -307,7 +315,8 @@ public class Election extends javax.swing.JFrame {
                 Con =DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db","root","");
                 PreparedStatement Add=Con.prepareStatement("insert into ElectionTbl values(?,?,?)");
                 Add.setInt(1, EId);
-                Add.setString(2,name.getText());
+                Add.setString(2, ElectionList.getSelectedItem().toString());
+                //Add.setString(2,name.getText());
                 Add.setString(3,EDate);
                 int row=Add.executeUpdate();
                 JOptionPane.showMessageDialog(this,"Election Added Succesfully");
@@ -324,7 +333,8 @@ public class Election extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)ElectionTable.getModel();
         int MyIndex = ElectionTable.getSelectedRow();
         Key = Integer.valueOf(model.getValueAt(MyIndex,0).toString());
-        name.setText(model.getValueAt(MyIndex,1).toString());
+       // name.setText(model.getValueAt(MyIndex,1).toString());
+        ElectionList.setSelectedItem(model.getValueAt(MyIndex,1).toString());
     }//GEN-LAST:event_ElectionTableMouseClicked
 
     private void DeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DeleteMouseClicked
@@ -358,7 +368,8 @@ public class Election extends javax.swing.JFrame {
                 String Query = "Update ElectionTbl set EName=?,EDate=? where EId=?";
                 
                 PreparedStatement UpdateQuery= Con.prepareStatement(Query);
-                UpdateQuery.setString(1, name.getText());
+                //UpdateQuery.setString(1, name.getText());
+                UpdateQuery.setString(1, ElectionList.getSelectedItem().toString());
                 UpdateQuery.setString(2, EDate);
                 UpdateQuery.setInt(3, Key);
                 UpdateQuery.executeUpdate();
@@ -369,6 +380,16 @@ public class Election extends javax.swing.JFrame {
         }
         } 
     }//GEN-LAST:event_EditMouseClicked
+
+    private void ElectionListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ElectionListActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ElectionListActionPerformed
+
+    private void BackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BackMouseClicked
+        // TODO add your handling code here:
+        new MainMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BackMouseClicked
 
     /**
      * @param args the command line arguments
@@ -411,6 +432,7 @@ public class Election extends javax.swing.JFrame {
     private javax.swing.JButton Delete;
     private javax.swing.JButton Edit;
     private com.toedter.calendar.JDateChooser ElectionDate;
+    private javax.swing.JComboBox<String> ElectionList;
     private javax.swing.JLabel ElectionNameTb;
     private javax.swing.JTable ElectionTable;
     private javax.swing.JLabel jLabel1;
@@ -418,6 +440,5 @@ public class Election extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField name;
     // End of variables declaration//GEN-END:variables
 }
