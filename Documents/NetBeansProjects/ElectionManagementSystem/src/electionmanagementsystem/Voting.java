@@ -262,6 +262,7 @@ public class Voting extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void BackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackBtnActionPerformed
@@ -340,12 +341,7 @@ public class Voting extends javax.swing.JFrame {
         } else {
             VNumber = 0;
         }
-         
-//               if(Rs1.next()){
-//                   VNumber=1;
-//               }else{
-//                   VNumber = 0;
-//               }
+ 
 
            }catch(Exception Ex)
            {    
