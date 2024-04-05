@@ -106,7 +106,7 @@ public class DashBoard extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 51, 102));
-        jLabel11.setText("Election List");
+        jLabel11.setText("Candidate List");
 
         Percentage.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         Percentage.setForeground(new java.awt.Color(51, 255, 0));
@@ -323,9 +323,9 @@ private void GetVotes()
               while(Rs.next()){
                
                   
-                //  JOptionPane.showMessageDialog(this,TotalVotes);
+
                   TotalVotes=Rs.getInt(1);
-                  WinPercentage=(TotalVotes*100)/Votes;
+                  WinPercentage=(Votes/TotalVotes);
                   Percentage.setText(new DecimalFormat("##.##").format(WinPercentage)+"%");
             }}catch (SQLException e){
                   JOptionPane.showMessageDialog(this,e);
@@ -339,7 +339,7 @@ private void GetVotes()
        
         GetWinnerData();
         GetWinner();
-       // GetWinnerData();
+ 
         GetVotes();
         GetPercentage();
     }//GEN-LAST:event_ElectionTableMouseClicked

@@ -238,7 +238,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="33" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Election List"/>
+            <Property name="text" type="java.lang.String" value="Candidate List"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="Percentage">
