@@ -47,6 +47,8 @@ public class Voters extends javax.swing.JFrame {
         Election = new javax.swing.JLabel();
         Password = new javax.swing.JLabel();
         VPassword = new javax.swing.JTextField();
+        StateList = new javax.swing.JComboBox<>();
+        Name1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -99,13 +101,13 @@ public class Voters extends javax.swing.JFrame {
         VotersTbl.setForeground(new java.awt.Color(255, 102, 0));
         VotersTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
             }
         ));
         VotersTbl.setSelectionForeground(new java.awt.Color(255, 102, 0));
@@ -215,6 +217,18 @@ public class Voters extends javax.swing.JFrame {
             }
         });
 
+        StateList.setForeground(new java.awt.Color(255, 51, 51));
+        StateList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "State", "Andhra Pradesh\t", "Arunachal Pradesh", "Assam\t", "Bihar\t", "Chhattisgarh\t", "Goa\t", "Gujarat\t", "Haryana\t", "Himachal Pradesh\t", "Jharkhand\t", "Karnataka\t", "Kerala\t", "Madhya Pradesh\t", "Maharashtra\t", "Manipur\t", "Meghalaya\t", "Mizoram\t", "Nagaland\t", "Odisha\t", "Punjab\t", "Rajasthan\t", "Sikkim\t", "Tamil Nadu\t", "Telangana\t", "Tripura\t", "Uttar Pradesh\t", "Uttarakhand\t", "West Bengal\t", " ", "Union Territory ", " ", "Andaman and Nicobar Island\t", "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Ladakh", "Lakshadweep", "Jammu and Kashmir", "Puducherry\t" }));
+        StateList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StateListActionPerformed(evt);
+            }
+        });
+
+        Name1.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
+        Name1.setForeground(new java.awt.Color(255, 51, 102));
+        Name1.setText("States");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -246,7 +260,9 @@ public class Voters extends javax.swing.JFrame {
                         .addComponent(Delete, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ElectionList, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(VPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(VPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(StateList, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Name1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 597, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(314, 314, 314))
@@ -277,6 +293,10 @@ public class Voters extends javax.swing.JFrame {
                             .addComponent(VName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(VAge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(VGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(Name1)
+                        .addGap(1, 1, 1)
+                        .addComponent(StateList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(Election)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -389,7 +409,7 @@ public class Voters extends javax.swing.JFrame {
            }  
 }
     private void AddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddMouseClicked
-         if (VAge.getText().isEmpty() || VName.getText().isEmpty() || ElectionList.getSelectedIndex() == -1 || VGender.getSelectedIndex() == -1)  
+         if (VAge.getText().isEmpty() || VName.getText().isEmpty() || ElectionList.getSelectedIndex() == -1 || VGender.getSelectedIndex() == -1 || StateList.getSelectedIndex() == -1)  
     {
         JOptionPane.showMessageDialog(this,"Missing Information");
     } else {
@@ -397,13 +417,14 @@ public class Voters extends javax.swing.JFrame {
             {
                 VotersCount();
             Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db", "root", "");
-            PreparedStatement Add = Con.prepareStatement("Insert into VotersTbl values (?,?,?,?,?,?)");
+            PreparedStatement Add = Con.prepareStatement("Insert into VotersTbl values (?,?,?,?,?,?,?)");
             Add.setInt(1, VId);
             Add.setString(2, VName.getText());
             Add.setString(3, VGender.getSelectedItem().toString());
             Add.setString(4,VPassword.getText());
             Add.setInt(5, Integer.parseInt(VAge.getText()));
             Add.setString(6,ElectionList.getSelectedItem().toString());
+            Add.setString(7,ElectionList.getSelectedItem().toString());
             
             int row = Add.executeUpdate();
             Con.close();
@@ -416,12 +437,12 @@ public class Voters extends javax.swing.JFrame {
     }//GEN-LAST:event_AddMouseClicked
     }
     private void EditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EditMouseClicked
-        if(Key == -1|| VAge.getText().isEmpty() || VName.getText().isEmpty() || ElectionList.getSelectedIndex() == -1 || VGender.getSelectedIndex() == -1){
+        if(Key == -1|| VAge.getText().isEmpty() || VName.getText().isEmpty() || ElectionList.getSelectedIndex() == -1 || VGender.getSelectedIndex() == -1 || StateList.getSelectedIndex() == -1){
             JOptionPane.showMessageDialog(this," Missing Information ");
         }else{
             try{
                 Con =DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db","root","");
-                String Query = "Update VotersTbl set VName=?,VGender=?,Vpassword=?,VAge=?,ElectionList=? where VId=?";
+                String Query = "Update VotersTbl set VName=?,VGender=?,Vpassword=?,VAge=?,ElectionList=?,StateName=? where VId=?";
                 
                 PreparedStatement UpdateQuery= Con.prepareStatement(Query);
                 UpdateQuery.setString(1, VName.getText());
@@ -429,6 +450,7 @@ public class Voters extends javax.swing.JFrame {
                 UpdateQuery.setString(3, VPassword.getText());
                 UpdateQuery.setInt(4, Integer.valueOf(VAge.getText().toString()));
                 UpdateQuery.setString(5, ElectionList.getSelectedItem().toString());
+                UpdateQuery.setString(5, StateList.getSelectedItem().toString());
                 UpdateQuery.setInt(6, Key);
                 UpdateQuery.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Election Updated Succesfully");
@@ -465,6 +487,8 @@ public class Voters extends javax.swing.JFrame {
         VPassword.setText(model.getValueAt(MyIndex,3).toString());
         VAge.setText(model.getValueAt(MyIndex,4).toString());
         ElectionList.setSelectedItem(model.getValueAt(MyIndex,5).toString());
+        StateList.setSelectedItem(model.getValueAt(MyIndex,5).toString());
+        
         
     }//GEN-LAST:event_VotersTblMouseClicked
 
@@ -472,6 +496,10 @@ public class Voters extends javax.swing.JFrame {
         new MainMenu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BackMouseClicked
+
+    private void StateListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StateListActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_StateListActionPerformed
 
    
     public static void main(String args[]) {
@@ -493,7 +521,9 @@ public class Voters extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> ElectionList;
     private javax.swing.JLabel Gender;
     private javax.swing.JLabel Name;
+    private javax.swing.JLabel Name1;
     private javax.swing.JLabel Password;
+    private javax.swing.JComboBox<String> StateList;
     private javax.swing.JTextField VAge;
     private javax.swing.JComboBox<String> VGender;
     private javax.swing.JTextField VName;

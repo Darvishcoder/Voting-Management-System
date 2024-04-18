@@ -9,9 +9,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -41,9 +40,11 @@ public class login extends javax.swing.JFrame {
         Pass = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         RoleList = new javax.swing.JComboBox<>();
-        LogIn = new javax.swing.JButton();
         Username = new javax.swing.JTextField();
+        StateName = new javax.swing.JComboBox<>();
         Password = new javax.swing.JPasswordField();
+        Name1 = new javax.swing.JLabel();
+        LogIn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -60,7 +61,7 @@ public class login extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(87, 87, 87)
+                .addGap(134, 134, 134)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -74,32 +75,17 @@ public class login extends javax.swing.JFrame {
 
         Name.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
         Name.setForeground(new java.awt.Color(255, 51, 102));
-        Name.setText("Name");
+        Name.setText("UserName");
 
         Pass.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
         Pass.setForeground(new java.awt.Color(255, 51, 102));
         Pass.setText("Password");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\DARVISH KISHOR\\Music\\image-100x91.jpg")); // NOI18N
-
         RoleList.setForeground(new java.awt.Color(255, 51, 51));
-        RoleList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin ", "Voter" }));
+        RoleList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select", "Head", "Admin ", "Voter" }));
         RoleList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RoleListActionPerformed(evt);
-            }
-        });
-
-        LogIn.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        LogIn.setText("Log In");
-        LogIn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                LogInMouseClicked(evt);
-            }
-        });
-        LogIn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LogInActionPerformed(evt);
             }
         });
 
@@ -109,57 +95,87 @@ public class login extends javax.swing.JFrame {
             }
         });
 
+        StateName.setForeground(new java.awt.Color(255, 51, 51));
+        StateName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "State", "AndhraPradesh\t", "ArunachalPradesh", "Assam\t", "Bihar\t", "Chhattisgarh\t", "Goa\t", "Gujarat\t", "Haryana\t", "HimachalPradesh\t", "Jharkhand\t", "Karnataka\t", "Kerala\t", "MadhyaPradesh\t", "Maharashtra\t", "Manipur\t", "Meghalaya\t", "Mizoram\t", "Nagaland\t", "Odisha\t", "Punjab\t", "Rajasthan\t", "Sikkim\t", "TamilNadu\t", "Telangana\t", "Tripura\t", "UttarPradesh\t", "Uttarakhand\t", "WestBengal\t", " " }));
+        StateName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StateNameActionPerformed(evt);
+            }
+        });
+
         Password.setText("jPasswordField1");
+
+        Name1.setFont(new java.awt.Font("Arial Black", 2, 14)); // NOI18N
+        Name1.setForeground(new java.awt.Color(255, 51, 102));
+        Name1.setText("States");
+
+        LogIn.setText("LogIn");
+        LogIn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LogInMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel4)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Pass, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(Name, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(LogIn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(31, 31, 31))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(RoleList, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Username)
-                            .addComponent(Password, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE))))
-                .addGap(97, 97, 97))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(73, 73, 73)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Pass, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(67, 67, 67)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Name1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(StateName, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Name, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+                                .addGap(47, 47, 47)))
+                        .addGap(45, 45, 45)
+                        .addComponent(RoleList, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LogIn)
+                .addGap(343, 343, 343))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(RoleList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(Name1)
+                        .addGap(5, 5, 5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(RoleList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(StateName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(46, 46, 46)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Name)
                             .addComponent(Username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(37, 37, 37)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Pass)
                             .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(LogIn, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel4))
-                .addGap(1, 22, Short.MAX_VALUE))
+                        .addGap(35, 35, 35)
+                        .addComponent(LogIn))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         pack();
@@ -170,40 +186,170 @@ public class login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_RoleListActionPerformed
 
-    private void LogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogInActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_LogInActionPerformed
-
     private void UsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_UsernameActionPerformed
+
+    private void StateNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StateNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_StateNameActionPerformed
+
     Connection Con=null;
     PreparedStatement Pst= null;
     ResultSet Rs =null;
     Statement St= null;
+
     private void LogInMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogInMouseClicked
-        if(RoleList.getSelectedIndex() == -1)
+        // TODO add your handling code here:
+//        List<String> desiredStates = Arrays.asList("Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh",	"Goa",	
+//            "Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur",
+//                "Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan",	"Sikkim	","Tamil Nadu","Telangana","Tripura",	
+//                "Uttar Pradesh","Uttarakhand","West Bengal	",
+//                "Andaman and Nicobar Island","Chandigarh","Dadra and Nagar Haveli and Daman and Diu","Delhi","Ladakh","Lakshadweep","Jammu and Kashmir","Puducherry"	); // Add your desired state names here
+        
+        if(RoleList.getSelectedIndex() == -1 && StateName.getSelectedIndex() == -1)
+
         {
             JOptionPane.showMessageDialog(this," Are you A Voter Or Admin?");
         } 
-        else if(RoleList.getSelectedIndex() == 0)
+        else if(RoleList.getSelectedIndex() == 1)
         {
             if(Username.getText().isEmpty() || Password.getText().isEmpty())
             {
                 JOptionPane.showMessageDialog(this,"Enter UserName & Password");
             }
-            else if(Username.getText().equals("Admin") && Password.getText().equals("Password"))
+            else if(Username.getText().equals("HEAD") && Password.getText().equals("123456"))
             {
-                new MainMenu().setVisible(true);
+                new HeadOfElectionCommission().setVisible(true);
                 this.dispose();
             }
             else
             {
-                JOptionPane.showMessageDialog(this, "Wrong Admin Name And Password??..... ");
+                JOptionPane.showMessageDialog(this, "Wrong Head UserName And Password??..... ");
                 Username.setText("");
                 Password.setText("");                
             }
         }
+        
+        else if ( RoleList.getSelectedIndex() == 2 ) {
+             String state = StateName.getSelectedItem().toString();
+            String Query = "SELECT * FROM StateTbl WHERE StateName='"+ state + "'AND AdminUsername = '" + Username.getText() + "' AND SPassword = '" + Password.getText() + "'";
+
+             try {
+              Con =DriverManager.getConnection("jdbc:mysql://localhost:3306/election.db","root","");
+              St=Con.createStatement();
+              Rs= St.executeQuery(Query);
+              if(Rs.next()){
+                  //new Voting().setVisible(true);
+//                  switch (state) {
+//                case "Andhra Pradesh":
+//                    new state.AndhraPradesh().setVisible(true);
+//                    break;
+//                case "Arunachal Pradesh":
+//                    new state.ArunachalPradesh().setVisible(true);
+//                    break;
+//                case "Assam":
+//                    new state.Assam().setVisible(true);
+//                    break;
+//                case "Bihar":
+//                    new state.Bihar().setVisible(true);
+//                    break;
+//                case "Chhattisgarh":
+//                    new state.Chhattisgarh().setVisible(true);
+//                    break;
+//                case "Goa":
+//                    new state.Goa().setVisible(true);
+//                    break;
+//                case "Gujarat":
+//                    new state.Gujarat().setVisible(true);
+//                    break;
+//                case "Haryana":
+//                    new state.Haryana().setVisible(true);
+//                    break;
+//                case "Himachal Pradesh":
+//                    new state.HimachalPradesh().setVisible(true);
+//                    break;
+//                case "Jharkhand":
+//                    new state.Jharkhand().setVisible(true);
+//                    break;
+//                case "Karnataka":
+//                    new state.Karnataka().setVisible(true);
+//                    break;
+//                case "Kerala":
+//                    new state.Kerala().setVisible(true);
+//                    break;
+//                case "Madhya Pradesh":
+//                    new state.MadhyaPradesh().setVisible(true);
+//                    break;
+//                case "Maharashtra":
+//                    new state.Maharashtra().setVisible(true);
+//                    break;
+//                case "Manipur":
+//                    new state.Manipur().setVisible(true);
+//                    break;
+//                case "Meghalaya":
+//                    new state.Meghalaya().setVisible(true);
+//                    break;
+//                case "Mizoram":
+//                    new state.Mizoram().setVisible(true);
+//                    break;
+//                case "Nagaland":
+//                    new state.Nagaland().setVisible(true);
+//                    break;
+//                case "Odisha":
+//                    new state.Odisha().setVisible(true);
+//                    break;
+//                case "Punjab":
+//                    new state.Punjab().setVisible(true);
+//                    break;
+//                case "Rajasthan":
+//                    new state.Rajasthan().setVisible(true);
+//                    break;
+//                case "Sikkim":
+//                    new state.Sikkim().setVisible(true);
+//                    break;
+//                case "Tamil Nadu":
+//                    new state.TamilNadu().setVisible(true);
+//                    break;
+//                case "Telangana":
+//                    new state.Telangana().setVisible(true);
+//                    break;
+//                case "Tripura":
+//                    new state.Tripura().setVisible(true);
+//                    break;
+//                case "Uttar Pradesh":
+//                    new state.UttarPradesh().setVisible(true);
+//                    break;
+//                case "Uttarakhand":
+//                    new state.Uttarakhand().setVisible(true);
+//                    break;
+//                case "West Bengal":
+//                    new state.WestBengal().setVisible(true);
+//                    break;
+//                // Add cases for other states similarly
+//                default:
+//                    // Handle if state is not found
+//                    break;
+//            }
+//         JFrame stateFrame = createStateFrame(state);
+//        stateFrame.setVisible(true);
+
+        String packageName = "states."; // Change this to your package name
+        String className = packageName + state.replaceAll("\\s", "");
+        Class<?> stateFrameClass = Class.forName(className);
+        JFrame stateFrame = (JFrame) stateFrameClass.getDeclaredConstructor().newInstance();
+        stateFrame.setVisible(true);
+                  //new MainMenu().setVisible(true);
+                  this.dispose();
+                }  
+              else{
+                   JOptionPane.showMessageDialog(this, "Wrong AdminUserName And Password??..... ");
+              }
+          }catch (Exception e){
+              JOptionPane.showMessageDialog(this, e);
+      }
+        }
+
         else {
             
             String Query = "SELECT * FROM VotersTbl WHERE VName = '" + Username.getText() + "' AND VPassword = '" + Password.getText() + "'";
@@ -218,12 +364,13 @@ public class login extends javax.swing.JFrame {
                   this.dispose();
                 }  
               else{
-                   JOptionPane.showMessageDialog(this, "Wrong UserName And Password??..... ");
+                   JOptionPane.showMessageDialog(this, "Wrong VoterUserName And Password??..... ");
               }
           }catch (Exception e){
               JOptionPane.showMessageDialog(this, e);
       }
         }
+    
     }//GEN-LAST:event_LogInMouseClicked
 
     /**
@@ -264,9 +411,11 @@ public class login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton LogIn;
     private javax.swing.JLabel Name;
+    private javax.swing.JLabel Name1;
     private javax.swing.JLabel Pass;
     private javax.swing.JPasswordField Password;
     private javax.swing.JComboBox<String> RoleList;
+    private javax.swing.JComboBox<String> StateName;
     private javax.swing.JTextField Username;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
